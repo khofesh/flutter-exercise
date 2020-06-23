@@ -12,6 +12,7 @@ class XylophoneApp extends StatelessWidget {
   Widget generateButton({int soundNumber, Color color}) {
     return Expanded(
       child: FlatButton(
+        child: Text(''),
         onPressed: () {
           playSound(soundNumber);
         },
