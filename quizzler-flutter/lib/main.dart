@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'questions.dart';
 
 void main() => runApp(Quizzler());
 
@@ -25,6 +26,43 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Widget> scoreKeeper = [];
+
+  List<Questions> questionAnswer = [
+    Questions(
+      q: 'You can lead a cow down stairs but not up stairs.',
+      a: false,
+    ),
+    Questions(
+      q: 'Approximately one quarter of human bones are in the feet.',
+      a: true,
+    ),
+    Questions(
+      q: 'A slug\'s blood is green.',
+      a: true,
+    ),
+  ];
+
+  int currentQuestion = 0;
+
+  void checkAnswer({bool correctAnswer, bool answer}) {
+    if (correctAnswer == true) {
+      return scoreKeeper.add(
+        Icon(
+          Icons.check,
+          color: Colors.green,
+        ),
+      );
+    } else {
+      return scoreKeeper.add(
+        Icon(
+          Icons.close,
+          color: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +75,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questionAnswer[currentQuestion].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -62,6 +100,16 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
+                setState(() {
+                  bool correctAnswer =
+                      questionAnswer[currentQuestion].questionAnswer;
+
+                  checkAnswer(correctAnswer: correctAnswer, answer: true);
+
+                  if (currentQuestion < questionAnswer.length - 1) {
+                    currentQuestion += 1;
+                  }
+                });
               },
             ),
           ),
@@ -80,11 +128,23 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
+                setState(() {
+                  bool correctAnswer =
+                      questionAnswer[currentQuestion].questionAnswer;
+
+                  checkAnswer(correctAnswer: correctAnswer, answer: true);
+
+                  if (currentQuestion < questionAnswer.length - 1) {
+                    currentQuestion += 1;
+                  }
+                });
               },
             ),
           ),
         ),
-        //TODO: Add a Row here as your score keeper
+        Row(
+          children: scoreKeeper,
+        ),
       ],
     );
   }
